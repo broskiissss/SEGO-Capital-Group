@@ -577,6 +577,46 @@ canvas#portfolioChart{width:100%!important;max-height:320px}
 .tax-form{font-family:var(--fb);font-size:11px;font-style:italic;color:var(--gold-t);margin-top:3px}
 @media(max-width:768px){.tax-row{grid-template-columns:1fr 1fr;row-gap:6px}.tax-desc{grid-column:1/-1;order:3}.tax-ref{grid-column:1/-1;order:4;text-align:left}}
 
+
+/* Branded tax summary (print only) */
+#tax-print{display:none}
+@media print{
+  body.tx-printing>*:not(#tax-print):not(svg){display:none!important}
+  body.tx-printing{background:#fff!important}
+  body.tx-printing #tax-print{display:block}
+  @page{size:letter;margin:.6in .6in .75in}
+}
+#tax-print{font-family:Georgia,'Times New Roman',serif;color:#1a1f2b;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:11px;line-height:1.5}
+#tax-print *{box-sizing:border-box}
+#tax-print .tp-head{display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:3px solid #B8964F}
+#tax-print .tp-mark{width:54px;height:54px;color:#B8964F;flex:none}
+#tax-print .tp-brand{font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:20px;letter-spacing:.22em;color:#101620}
+#tax-print .tp-tag{font-style:italic;font-size:11px;color:#7a6a3f;margin-top:2px;letter-spacing:.04em}
+#tax-print .tp-hr{margin-left:auto;text-align:right;font-family:'Helvetica Neue',Arial,sans-serif;font-size:9px;color:#5a6272;letter-spacing:.04em;line-height:1.6}
+#tax-print h1{font-family:'Helvetica Neue',Arial,sans-serif;font-size:22px;letter-spacing:.06em;margin:22px 0 4px;color:#101620;text-transform:uppercase}
+#tax-print .tp-sub{color:#5a6272;margin-bottom:14px}
+#tax-print .tp-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #d9d2c0;margin:12px 0 20px}
+#tax-print .tp-meta div{padding:8px 12px;border-right:1px solid #d9d2c0}
+#tax-print .tp-meta div:last-child{border-right:none}
+#tax-print .tp-meta b{display:block;font-family:'Helvetica Neue',Arial,sans-serif;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#7a6a3f;margin-bottom:2px}
+#tax-print table{width:100%;border-collapse:collapse}
+#tax-print th{font-family:'Helvetica Neue',Arial,sans-serif;font-size:8px;letter-spacing:.12em;text-transform:uppercase;text-align:left;color:#fff;background:#101620;padding:7px 8px}
+#tax-print th.r,#tax-print td.r{text-align:right}
+#tax-print td{padding:7px 8px;border-bottom:1px solid #e6e1d2;vertical-align:top}
+#tax-print tr{page-break-inside:avoid}
+#tax-print thead{display:table-header-group}
+#tax-print .tp-id{font-family:'Courier New',monospace;font-size:9px;color:#5a6272;white-space:nowrap}
+#tax-print .tp-form{display:block;font-style:italic;color:#7a6a3f;font-size:10px;margin-top:2px}
+#tax-print .tp-yr td{background:#f4efe1;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#101620}
+#tax-print .tp-sum td{font-weight:700;background:#faf7ee;border-top:1px solid #B8964F}
+#tax-print .tp-amt{font-weight:700;white-space:nowrap}
+#tax-print .tp-sec{page-break-before:always;padding-top:4px}
+#tax-print .tp-sec h2{font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 2px;padding:8px 12px;background:#101620;color:#fff;border-left:6px solid #B8964F}
+#tax-print .tp-sec .tp-note{color:#5a6272;margin:8px 0 12px;font-size:10.5px}
+#tax-print .tp-grand td{font-size:13px;background:#101620;color:#fff;border:none;padding:10px 8px}
+#tax-print .tp-disc{margin-top:20px;padding:10px 12px;border:1px solid #d9d2c0;font-size:9.5px;color:#4a5160;line-height:1.55}
+#tax-print .tp-foot{margin-top:24px;padding-top:8px;border-top:1px solid #B8964F;font-family:'Helvetica Neue',Arial,sans-serif;font-size:8.5px;letter-spacing:.04em;color:#5a6272;text-align:center}
+
 /* Quarterly reports */
 .qr-card{background:var(--deep);border:1px solid var(--rule);padding:22px 24px;margin-bottom:16px;transition:transform .3s var(--spring-soft),border-color .3s var(--apple)}
 .qr-card:hover{transform:translateY(-2px);border-color:rgba(var(--gr),.25)}
@@ -1007,6 +1047,21 @@ nav.hn{gap:6px}
   .ncb{font-size:11px;letter-spacing:.11em;padding:10px 15px;margin-left:12px}
   nav.hn{gap:4px}
 }
+
+/* ── DOCUMENT LIBRARY ── */
+a.doc-dl{display:inline-block;text-decoration:none;text-align:center}
+.doc-grp{font-family:var(--fu);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-t);margin:26px 0 4px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.doc-grp:first-child{margin-top:0}
+.doc-desc{font-family:var(--fb);font-size:12px;color:var(--mut);line-height:1.5;margin-top:3px;max-width:520px}
+.pubdocs{display:grid;gap:14px;max-width:860px;margin:40px auto 0}
+.pub-doc{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:20px 24px;background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--gold);text-decoration:none;color:var(--ton);transition:transform .3s var(--spring-soft),border-color .3s var(--apple)}
+.pub-doc:hover{transform:translateY(-2px);border-color:var(--gold-t)}
+.pub-doc .doc-ico{width:44px;height:44px;font-size:10px}
+.pub-doc b{display:block;font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:.02em}
+.pub-doc small{display:block;font-family:var(--fb);font-size:14px;color:var(--sub);line-height:1.6;margin-top:4px}
+.pub-doc .doc-dl{pointer-events:none}
+.pubdocs-n{max-width:860px;margin:16px auto 0;font-family:var(--fb);font-size:13px;color:var(--mut);line-height:1.7;text-align:center}
+@media(max-width:768px){.pub-doc{grid-template-columns:auto 1fr;}.pub-doc .doc-dl{grid-column:1/-1}}
 </style>
 <script>
 var PD={theme:'blue',fs:0,hc:0,rm:(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)?1:0,ft:0,sp:0,ul:0,lang:'en',
@@ -1266,6 +1321,18 @@ pApply();
     </div>
   </section>
 
+  <section class="hm-sec hm-deep" aria-labelledby="rs-docs">
+    <div class="pi">
+      <div class="hm-head c rv">
+        <div class="sl" style="justify-content:center">Documents</div>
+        <h2 class="sh" id="rs-docs">Review the lease<br><em>before you apply.</em></h2>
+        <p class="sl2" style="margin:0 auto">Read our standard Section 8 lease at your own pace so there are no surprises at signing.</p>
+      </div>
+      <div class="pubdocs rv d1" data-docs="lease"></div>
+      <p class="pubdocs-n">This is a blank sample form. Property details, rent amounts, and dates are completed at signing, and your housing authority’s requirements apply.</p>
+    </div>
+  </section>
+
   <section class="hm-sec hm-ink hm-bridge" aria-labelledby="rs-comm">
     <div class="pi">
       <div class="hm-head c rv">
@@ -1502,6 +1569,15 @@ pApply();
       <div class="pl"><div class="plr">V</div><div><div class="plt">Long-Term Alignment</div><p class="pld">Managing Director Santiago Enrique Guzman Osorio's personal capital is invested alongside every investor. This is a shared enterprise.</p></div></div>
     </div>
   </div></div></div>
+  <section class="hm-sec hm-deep" aria-labelledby="ms-docs">
+    <div class="pi">
+      <div class="hm-head c rv">
+        <div class="sl" style="justify-content:center">Giving back</div>
+        <h2 class="sh" id="ms-docs">Our philanthropy,<br><em>in writing.</em></h2>
+      </div>
+      <div class="pubdocs rv d1" data-docs="philanthropy"></div>
+    </div>
+  </section>
   <footer><div class="fi2"><div class="fb2"><svg class="fs2" aria-hidden="true"><use href="#mk"/></svg><span class="fw">SEGO CAPITAL GROUP</span></div><div class="ft">Private Capital. Timeless Value.</div><div class="fm">Phoenix, Arizona · Est. 2024<br>Equal Housing Opportunity<br>© 2026 SEGO Capital Group<br>All rights reserved</div></div></footer>
 </div>
 
@@ -2335,11 +2411,13 @@ function autoFillCS(){
     <!-- PANEL: DOCUMENTS VAULT -->
     <div id="dp-docs" class="dash-panel">
       <h2 style="font-family:var(--fd);font-size:28px;font-weight:700;color:var(--ton);letter-spacing:.04em;margin-bottom:10px">Documents</h2>
-      <p style="font-family:var(--fb);font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:24px;max-width:760px">Every signed agreement, K-1, and disclosure tied to your SEGO relationship, in one place — no more digging through email for the file you need.</p>
+      <p style="font-family:var(--fb);font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:24px;max-width:760px">Your agreements, reports, and strategy materials from SEGO, plus your personal account documents, in one place — no more digging through email for the file you need.</p>
       <div class="dash-box" style="background:var(--deep);border:1px solid var(--rule);padding:24px">
+        <div id="doc-lib"></div>
+        <div class="doc-grp">Your account documents <span style="letter-spacing:.06em;text-transform:none;font-weight:400;color:var(--mut)">(preview data)</span></div>
         <div id="doc-list"></div>
       </div>
-      <div class="fee-notice" style="margin-top:20px"><p>Documents are simulated for this preview. In production, each row links to a securely stored PDF you can view or download at any time.</p></div>
+      <div class="fee-notice" style="margin-top:20px"><p><strong>Access:</strong> SEGO library documents open in Google Drive and require that SEGO has shared them with your Google account. If a document asks for access, email <a href="mailto:santiago@segocapital.com" style="color:var(--gold-t)">santiago@segocapital.com</a>. Account documents shown under “preview data” are sample entries.</p></div>
     </div>
 
     <div id="dp-cal" class="dash-panel"><h2 style="font-family:var(--fd);font-size:28px;font-weight:700;color:var(--ton);letter-spacing:.04em;margin-bottom:24px">Calendar</h2><div id="cal-c"></div></div>
@@ -2556,6 +2634,11 @@ function autoFillCS(){
         <div class="dash-box">
           <div class="dash-box-title">Appliance Manuals &amp; Warranties</div>
           <div id="appliance-list"></div>
+        </div>
+        <div class="dash-box" style="grid-column:1/-1">
+          <div class="dash-box-title">Lease &amp; Documents</div>
+          <div id="tenant-docs"></div>
+          <p class="doc-desc" style="margin-top:14px;max-width:none">Documents open in Google Drive. If one asks for access, send us a message and we’ll share it with you.</p>
         </div>
       </div>
     </div>
@@ -2939,12 +3022,78 @@ function renderTaxLog(containerId, limit) {
   }).join('');
 }
 
-function printTaxLog() { window.print(); }
+function printTaxLog() {
+  var u = S.get('u') || {};
+  var SECS = [
+    { key:'housing', title:'Section 1 — Housing (Real Estate)', cats:['re','other'],
+      note:'Depreciation and deductible operating expenses from the SEGO Estates residential rental portfolio. Carries to Form 4562 and Schedule E.' },
+    { key:'giving', title:'Section 2 — Charitable Giving', cats:['charity'],
+      note:'Contributions made through the SEGO Foundation to qualified 501(c)(3) organizations. Carries to Schedule A.' },
+    { key:'stocks', title:'Section 3 — Stock Investments', cats:['harvest'],
+      note:'Realized losses from tax-loss harvesting across the investment portfolio. Carries to Form 8949 and Schedule D.' }
+  ];
+  function num(a){ return parseFloat(String(a).replace(/[^0-9.]/g,'')) || 0; }
+  function money(n){ return '$' + n.toLocaleString('en-US'); }
+  function yr(t){ return t.date.slice(-4); }
+  var years = {}; TAXLOG.forEach(function(t){ years[yr(t)] = 1; });
+  var yl = Object.keys(years).sort();
+  var span = yl.length > 1 ? yl[0] + '–' + yl[yl.length-1] : yl[0];
+  var now = new Date();
+  var today = now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var grand = 0, sums = [], body = '';
+
+  SECS.forEach(function(sec, i){
+    var rows = TAXLOG.filter(function(t){ return sec.cats.indexOf(t.cat) > -1; });
+    var tot = rows.reduce(function(a,t){ return a + num(t.amt); }, 0);
+    sums.push({ title:sec.title.replace(/^Section \d — /,''), n:rows.length, tot:tot, i:i+1 });
+    grand += tot;
+    var ys = {}; rows.forEach(function(t){ ys[yr(t)] = 1; });
+    var h = '<div class="tp-sec"><h2>' + escapeHtml(sec.title) + '</h2><p class="tp-note">' + escapeHtml(sec.note) + '</p>'
+      + '<table><thead><tr><th style="width:15%">Date</th><th>Description &amp; Where It Reports</th><th style="width:20%">Record ID</th><th class="r" style="width:13%">Amount</th></tr></thead><tbody>';
+    if (!rows.length) h += '<tr><td colspan="4">No entries logged.</td></tr>';
+    Object.keys(ys).sort().reverse().forEach(function(y){
+      var yr_rows = rows.filter(function(t){ return yr(t) === y; });
+      var ytot = yr_rows.reduce(function(a,t){ return a + num(t.amt); }, 0);
+      h += '<tr class="tp-yr"><td colspan="4">Tax Year ' + y + '</td></tr>';
+      yr_rows.forEach(function(t){
+        h += '<tr><td>' + escapeHtml(t.date) + '<br><span class="tp-id">Logged ' + escapeHtml(t.logged) + '</span></td>'
+          + '<td><b>' + escapeHtml(t.catLabel) + '</b> — ' + escapeHtml(t.desc) + '<span class="tp-form">Reports to: ' + escapeHtml(t.form) + '</span></td>'
+          + '<td class="tp-id">' + escapeHtml(t.id) + '</td>'
+          + '<td class="r tp-amt">' + escapeHtml(t.amt) + '</td></tr>';
+      });
+      h += '<tr class="tp-sum"><td colspan="3" class="r">' + y + ' subtotal</td><td class="r">' + money(ytot) + '</td></tr>';
+    });
+    h += '<tr class="tp-grand"><td colspan="3" class="r">Total — ' + escapeHtml(sec.title.replace(/^Section \d — /,'')) + '</td><td class="r">' + money(tot) + '</td></tr>';
+    h += '</tbody></table></div>';
+    body += h;
+  });
+
+  var head = '<div class="tp-head"><svg class="tp-mark" aria-hidden="true"><use href="#mk"/></svg>'
+    + '<div><div class="tp-brand">SEGO CAPITAL GROUP</div><div class="tp-tag">Private Capital. Timeless Value.</div></div>'
+    + '</div>';
+  var cover = head
+    + '<h1>Tax Deduction Summary</h1><div class="tp-sub">Prepared for review with your tax advisor</div>'
+    + '<div class="tp-meta"><div><b>Prepared for</b>' + escapeHtml(u.name || 'SEGO Client') + '</div>'
+    + '<div><b>Tax years covered</b>' + span + '</div><div><b>Date prepared</b>' + today + '</div></div>'
+    + '<table><thead><tr><th style="width:8%">Section</th><th>Category</th><th class="r" style="width:12%">Entries</th><th class="r" style="width:18%">Total</th></tr></thead><tbody>'
+    + sums.map(function(x){ return '<tr><td>' + x.i + '</td><td>' + escapeHtml(x.title) + '</td><td class="r">' + x.n + '</td><td class="r tp-amt">' + money(x.tot) + '</td></tr>'; }).join('')
+    + '<tr class="tp-grand"><td colspan="3" class="r">Total logged deductions</td><td class="r">' + money(grand) + '</td></tr></tbody></table>'
+    + '<div class="tp-disc"><b>How to use this document.</b> Each of the following three sections lists one type of deduction, grouped by tax year with subtotals, so your advisor can carry totals directly to the form shown under each entry. Every entry carries a permanent Record ID retained on SEGO Capital Group’s compliance system. This summary is informational and is not tax or legal advice; please confirm all figures and eligibility with your CPA before filing.</div>';
+  var foot = '<div class="tp-foot">SEGO CAPITAL GROUP · Private Capital. Timeless Value. · Confidential — prepared for ' + escapeHtml(u.name || 'client') + ' · ' + today + '</div>';
+
+  var host = document.getElementById('tax-print');
+  if (!host) { host = document.createElement('div'); host.id = 'tax-print'; document.body.appendChild(host); }
+  host.innerHTML = cover + body + foot;
+  document.body.classList.add('tx-printing');
+  var done = function(){ document.body.classList.remove('tx-printing'); host.innerHTML=''; window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  setTimeout(function(){ window.print(); }, 50);
+}
 
 /* ── QUARTERLY REPORTS ── */
 var QREPORTS = [
   { q:'Q2 2026', period:'Apr 1 – Jun 30, 2026', value:'$278,540', ret:'+4.1%', income:'$5,600', note:'Continued strength in the real estate income sleeve; venture allocation rebalanced mid-quarter.' },
-  { q:'Q1 2026', period:'Jan 1 – Mar 31, 2026', value:'$267,410', ret:'+2.8%', income:'$5,340', note:'Depreciation schedule updated for the tax year; new capital deployed to the venture allocation.' },
+  { q:'Q1 2026', period:'Jan 1 – Mar 31, 2026', doc:'q1', value:'$267,410', ret:'+2.8%', income:'$5,340', note:'Depreciation schedule updated for the tax year; new capital deployed to the venture allocation.' },
   { q:'Q4 2025', period:'Oct 1 – Dec 31, 2025', value:'$260,020', ret:'+3.5%', income:'$5,120', note:'Year-end tax-loss harvesting executed across the public equities sleeve.' },
   { q:'Q3 2025', period:'Jul 1 – Sep 30, 2025', value:'$251,180', ret:'+1.9%', income:'$4,980', note:'Occupancy held above 95% across the SEGO Estates residential portfolio.' },
   { q:'Q2 2025', period:'Apr 1 – Jun 30, 2025', value:'$246,300', ret:'+3.2%', income:'$4,860', note:'Public equities sleeve rebalanced; realized losses banked for future offset.' },
@@ -2963,6 +3112,7 @@ function renderQuarterly(){
       + '</div>'
       + '<p class="qr-note">'+T(r.note)+'</p>'
       + '<button class="dash-edit-btn" onclick="window.print()">'+T('Print / Save This Report')+'</button>'
+      + (r.doc&&docById(r.doc)?' <a class="dash-edit-btn doc-dl" style="margin-left:8px;text-decoration:none" href="'+docById(r.doc).url+'" target="_blank" rel="noopener noreferrer">Firm-wide Investor Update (PDF)</a>':'')
       + '</div>';
   }).join('');
 }
@@ -3025,12 +3175,52 @@ function tdTab(id) {
   if (id === 'overview') { renderPays('t-pay-preview', 3); renderStreak(); }
   if (id === 'payments') renderPays('full-pay-list');
   if (id === 'maint') renderMaintTracker();
-  if (id === 'home') renderAppliances();
+  if (id === 'home') { renderAppliances(); renderDocLib('tenant-docs','tenant'); }
   if (id === 'messages') renderMessages();
   if (id === 'community') renderCommunity();
   if (id === 'cal') calRender('t');
   if (id === 'profile') { renderTenantProfile(); renderRenewal(); }
 }
+
+
+/* ══ DOCUMENT LIBRARY (files live in SEGO's Google Drive) ══
+   aud: 'public' = shown on the public site; 'client' = Client/Investor portal; 'tenant' = Tenant portal.
+   Internal files (payroll, employee agreement, insurance, financials, SOPs, compliance manual,
+   brand/training guides, 5-year plan) are intentionally NOT listed anywhere on this website. */
+var DRV='https://drive.google.com/file/d/';
+var DOC_LIB = [
+  { id:'lease', aud:['public','tenant'], grp:'Lease', kind:'PDF', title:'Section 8 Residential Lease Agreement', desc:'SEGO’s standard HUD Section 8 lease: rent, utilities, repairs, deposit, and move-out terms.', url:DRV+'1B-E1IT0_q6JWsCKVCX9m9Cn9AikekEIn/view?usp=drivesdk' },
+  { id:'philanthropy', aud:['public'], grp:'Community', kind:'PDF', title:'Philanthropy in Action', desc:'How the SEGO Foundation gives: education, mental health, and community building.', url:DRV+'1IPysDXaz0UVrAyiTKF6GrFyx7zzOVsuz/view?usp=drivesdk' },
+  { id:'onboarding', aud:['client'], grp:'Agreements & onboarding', kind:'PDF', title:'Investor Onboarding Process', desc:'Your first 30 days: qualification, agreement, capital deployment, and first report.', url:DRV+'1BfR0j1cNojWCYY-WVurQrIJ_C6DHJroc/view?usp=drivesdk' },
+  { id:'collab', aud:['client'], grp:'Agreements & onboarding', kind:'PDF', title:'Investment & Client Collaboration Agreement', desc:'Form agreement: investment terms, hold period, reporting, fees, and risk acknowledgment.', url:DRV+'1Lu7wC0eMO0TwhkcvVqS1LNpfxCKBti_M/view?usp=drivesdk' },
+  { id:'q1', aud:['client'], grp:'Reports & strategy', kind:'PDF', title:'Q1 2026 Investor Update', desc:'Firm-wide performance report and outlook, Jan 1 – Mar 31, 2026.', url:DRV+'1NGf39XedI9IzM6jJA3UsgrKzKb0Bi7By/view?usp=drivesdk' },
+  { id:'track', aud:['client'], grp:'Reports & strategy', kind:'PDF', title:'Track Record & Case Studies', desc:'Portfolio results and case studies across real estate and diversified investments.', url:DRV+'1H1PIjYM4XEJchdOKSEpvYl_d5ljxmLeS/view?usp=drivesdk' },
+  { id:'tax', aud:['client'], grp:'Reports & strategy', kind:'PDF', title:'Tax Optimization Strategy', desc:'How entity structure, depreciation, loss harvesting, and giving work together.', url:DRV+'1s1ni_VayPUYS3vZg8aMPXM5_V6wAREv2/view?usp=drivesdk' },
+  { id:'gov', aud:['client'], grp:'Reports & strategy', kind:'PDF', title:'Governance Framework', desc:'Organizational structure, Investment Committee charter, and risk framework.', url:DRV+'1RGbKs2_mvs6BuK7-JSVuQo80BSk86DuA/view?usp=drivesdk' }
+];
+function docsFor(a){return DOC_LIB.filter(function(d){return d.aud.indexOf(a)>-1;});}
+function docById(i){for(var k=0;k<DOC_LIB.length;k++)if(DOC_LIB[k].id===i)return DOC_LIB[k];}
+function docRow(d){
+  return '<div class="doc-row"><div class="doc-ico">'+d.kind+'</div><div><div class="doc-name">'+escapeHtml(T(d.title))+'</div><div class="doc-desc">'+escapeHtml(d.desc)+'</div></div><div class="doc-meta"></div><a class="doc-dl" href="'+d.url+'" target="_blank" rel="noopener noreferrer">'+T('Open')+'</a></div>';
+}
+function renderDocLib(hostId,aud){
+  var el=document.getElementById(hostId);if(!el)return;
+  var list=docsFor(aud),out='',last='';
+  list.forEach(function(d){
+    if(d.grp!==last){last=d.grp;if(aud==='client')out+='<div class="doc-grp">'+escapeHtml(d.grp)+'</div>';}
+    out+=docRow(d);
+  });
+  el.innerHTML=out;
+}
+function renderPubDocs(){
+  document.querySelectorAll('.pubdocs[data-docs]').forEach(function(el){
+    el.innerHTML=el.getAttribute('data-docs').split(',').map(function(i){
+      var d=docById(i.trim());if(!d)return '';
+      return '<a class="pub-doc" href="'+d.url+'" target="_blank" rel="noopener noreferrer"><span class="doc-ico">'+d.kind+'</span><span><b>'+escapeHtml(d.title)+'</b><small>'+escapeHtml(d.desc)+'</small></span><span class="doc-dl">View PDF</span></a>';
+    }).join('');
+  });
+}
+renderPubDocs();
 
 /* ══ NEW: DOCUMENTS VAULT ══ */
 var DOCS = [
@@ -3042,6 +3232,7 @@ var DOCS = [
   { name:'Operating Agreement — SEGO Capital Group LP.pdf', meta:'Executed Jan 12, 2026 · PDF', kind:'PDF' },
 ];
 function renderDocs(){
+  renderDocLib('doc-lib','client');
   var el=document.getElementById('doc-list');if(!el)return;
   el.innerHTML=DOCS.map(function(d){
     return '<div class="doc-row"><div class="doc-ico">'+d.kind+'</div><div><div class="doc-name">'+d.name+'</div><div class="doc-meta">'+d.meta+'</div></div><div class="doc-meta"></div><button class="doc-dl" onclick="alert(\'This would open/download: '+d.name.replace(/'/g,"\\'")+'\')">View / Download</button></div>';
@@ -3553,6 +3744,7 @@ function sgIdx(r){
   else{TXN.forEach(function(x){X.push({t:T(x.desc),s:T('Transaction')+' · '+TD(x.date)+' · '+x.amt,k:x.type,tab:'history'});});
     TAXLOG.forEach(function(x){X.push({t:T(x.catLabel)+' — '+TDESC(x.desc),s:T('Tax log')+' · '+TD(x.date)+' · '+x.amt,k:x.id+' '+x.form,tab:'tax'});});
     QREPORTS.forEach(function(x){X.push({t:x.q+' '+T('Quarterly Report'),s:x.period+' · '+x.value,k:x.note,tab:'quarterly'});});}
+  docsFor(tn?'tenant':'client').forEach(function(d){X.push({t:d.title,s:T('Document')+' · '+d.grp,k:d.desc+' pdf',tab:tn?'home':'docs'});});
   calEv(r).forEach(function(x){if(x.s)X.push({t:x.t,s:T('Calendar')+' · '+cF(x.d)+(x.a?' · '+x.a:''),k:KL[x.k],tab:'cal',d:x.d});});
   return X;
 }
