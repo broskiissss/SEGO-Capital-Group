@@ -2162,7 +2162,7 @@ document.getElementById('crForm').addEventListener('submit',function(e){
   S.set('pending_user', u);
   S.set('pending_email', em);
   showVerifyOverlay(em);
-  sendWelcomeEmail(em);
+  sendCode(em);
 });
 
 /* Auto-fill consultation from session */
@@ -2188,11 +2188,16 @@ function autoFillCS(){
     <svg class="vo-seal" aria-hidden="true"><use href="#mk"/></svg>
     <div class="vo-title">Verify Your Email</div>
     <div class="vo-sub">One step before your account is active.</div>
-    <p class="vo-txt">We've sent a verification link to:</p>
+    <p class="vo-txt">Enter the 6-digit code for:</p>
     <div class="vo-email-shown" id="vo-email">your@email.com</div>
-    <p class="vo-txt">Open the email and click the link to confirm your address and activate your SEGO Capital Group account. The link expires in 24 hours.</p>
-    <button class="vo-resend" onclick="doResend()">Resend Verification Email</button>
-    <div class="vo-demo" onclick="simulateVerify()" title="Demo: simulate email click">[ Demo only: Click to simulate verification → ]</div>
+    <form id="vo-form" onsubmit="doVerify(event)" novalidate>
+      <label for="vo-pin" class="vo-txt" style="display:block">Verification code (expires 15 minutes after sending)</label>
+      <input class="fi" id="vo-pin" inputmode="numeric" autocomplete="one-time-code" maxlength="6" style="max-width:240px;margin:0 auto 14px;text-align:center;font-size:24px;letter-spacing:8px">
+      <button class="vo-resend" type="submit">Verify Email</button>
+    </form>
+    <div class="vo-txt" id="vo-st" role="status" aria-live="polite" style="margin-top:14px"></div>
+    <button class="vo-resend" type="button" onclick="doResend()">Resend Code</button>
+    <button class="vo-resend" type="button" onclick="cancelVerify()">Use a Different Email</button>
   </div>
 </div>
 
@@ -3468,55 +3473,61 @@ function savePrefs() {
 }
 
 /* ── EMAIL VERIFICATION SYSTEM ── */
+/* Paste the Apps Script web app URL (ends in /exec) between the quotes. It is not a secret. */
+var VERIFY_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
+
+function voSay(msg){document.getElementById('vo-st').textContent=msg;}
 function showVerifyOverlay(email) {
   document.getElementById('vo-email').textContent = email;
+  document.getElementById('vo-pin').value = '';
   document.getElementById('verify-overlay').classList.add('show');
 }
-function doResend() {
-  var email = S.get('pending_email') || '';
-  sendWelcomeEmail(email);
-  alert('Verification email resent to ' + email + '. Please check your inbox.');
+async function callVerify(body) {
+  if (VERIFY_URL.indexOf('https://') !== 0) return { code: 'not_set_up' };
+  try {
+    /* text/plain avoids a CORS preflight, which Apps Script does not answer */
+    var r = await fetch(VERIFY_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) });
+    return await r.json();
+  } catch (e) { return { code: 'network' }; }
 }
-function simulateVerify() {
-  // Simulate clicking the email verification link
-  var pending = S.get('pending_user');
-  if (!pending) return;
-  pending.verified = true;
-  S.set('u', pending);
-  S.del('pending_user');
-  S.del('pending_email');
+function voMessage(r) {
+  var m = {
+    sent:'A code has been sent. Check the inbox and spam folder.',
+    wait:'Please wait '+r.seconds+' seconds before requesting another code.',
+    hourly_limit:'Too many codes requested. Try again in one hour.',
+    busy:'Email is temporarily unavailable. Please try again later.',
+    bad_email:'That email address is not valid.',
+    invalid:'Invalid code.'+(r.left?' Attempts remaining: '+r.left+'.':' Request a new code.'),
+    expired:'This code has expired. Select Resend Code.',
+    too_many:'Too many attempts. Select Resend Code.',
+    already_verified:'This email is already verified and the code cannot be reused.',
+    not_set_up:'Email verification is not set up yet.'
+  };
+  return m[r.code] || 'Something went wrong. Please try again.';
+}
+async function sendCode(email) {
+  voSay('Sending code…');
+  voSay(voMessage(await callVerify({ action:'send', email:email })));
+}
+function doResend() { sendCode(S.get('pending_email') || ''); }
+function cancelVerify() {
+  S.del('pending_user'); S.del('pending_email'); voSay('');
   document.getElementById('verify-overlay').classList.remove('show');
-  // Show the correct dashboard
-  if (pending.type === 'tn') {
-    initTenantDash(pending);
-    gp('tdash');
-  } else {
-    initClientDash(pending);
-    gp('dash');
-  }
 }
-
-function sendWelcomeEmail(email) {
-  // Opens mailto to sego.institutional@gmail.com with notification
-  // AND triggers a "no-reply" style welcome to the new member
-  var u = S.get('pending_user') || S.get('u') || {};
-  var name = u.name || 'Member';
-  var notif_subj = 'New SEGO Account Created — ' + name;
-  var notif_body = [
-    'NEW ACCOUNT NOTIFICATION',
-    '========================',
-    'Name:    ' + name,
-    'Email:   ' + email,
-    'Phone:   ' + (u.phone || 'Not provided'),
-    'Type:    ' + (u.type === 'tn' ? 'Tenant' : 'Client'),
-    'Year:    ' + (u.yr || new Date().getFullYear()),
-    '',
-    '— segocapital.com / Automated Account Notification'
-  ].join('\n');
-  // Open mailto to institutional inbox (notification)
-  var link = document.createElement('a');
-  link.href = 'mailto:sego.institutional@gmail.com?subject=' + encodeURIComponent(notif_subj) + '&body=' + encodeURIComponent(notif_body);
-  link.style.display='none';document.body.appendChild(link);link.click();setTimeout(function(){link.remove();},500);
+async function doVerify(ev) {
+  ev.preventDefault();
+  var pending = S.get('pending_user');
+  var pin = document.getElementById('vo-pin').value.trim();
+  if (!pending) return;
+  if (!/^\d{6}$/.test(pin)) { voSay('Enter the 6-digit code.'); return; }
+  voSay('Checking…');
+  var r = await callVerify({ action:'verify', email:pending.email, pin:pin });
+  if (r.code !== 'verified') { voSay(voMessage(r)); return; }
+  pending.verified = true;
+  S.set('u', pending); S.del('pending_user'); S.del('pending_email'); voSay('');
+  document.getElementById('verify-overlay').classList.remove('show');
+  showMember(pending);
+  goToDashboard(pending);
 }
 
 /* ── INIT CLIENT DASHBOARD ── */
